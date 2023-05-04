@@ -1,0 +1,14 @@
+[
+    {
+        name: "Test",
+        transform: {
+            position: [0.0, 0.0],
+        },
+        components: [
+            {
+                name: "Test",
+                output: "Hello World!",
+            }
+        ],
+    }
+]

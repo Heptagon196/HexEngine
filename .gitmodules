@@ -1,0 +1,3 @@
+[submodule "core/Gos"]
+	path = core/Gos
+	url = https://github.com/heptagon196/Gos

@@ -1,0 +1,7 @@
+{
+    gameTitle: "FlappyBird",
+    screenWidth: 1920,
+    screenHeight: 1080,
+    startScene: "data/main.scene",
+    frame: 1,
+}
