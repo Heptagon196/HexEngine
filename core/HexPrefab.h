@@ -11,5 +11,5 @@ class HexPrefab {
         HexPrefab();
         HexPrefab(std::istream&& reader);
         void __ctor(const std::string& prefabPath);
-        GameObject* Instantiate();
+        GameObject* Instantiate(bool alwaysPreserveRoot = true, bool callAwakeAndStart = false);
 };

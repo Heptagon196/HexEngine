@@ -1,0 +1,18 @@
+class VerticalMoving : Component {
+    var speed: float;
+    var cycle: bool;
+    var startX: float;
+    var endX: float;
+    var delay: int;
+    func Update() void {
+        if (delay > 0) {
+            delay--;
+            return;
+        }
+        var position = gameObject.transform.position;
+        position.x -= speed;
+        if (cycle && position.x < endX) {
+            position.x = startX;
+        }
+    }
+}

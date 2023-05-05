@@ -1,0 +1,14 @@
+{
+    gameTitle: "TestGame",
+    screenWidth: 1080,
+    screenHeight: 720,
+    startScene: "test/other.scene",
+    frame: 60,
+    centered: true,
+    windowType: Normal,
+    gravityX: 0,
+    gravityY: -10,
+    doSleep: true,
+    velocityIterations: 10,
+    positionIterations: 8,
+}

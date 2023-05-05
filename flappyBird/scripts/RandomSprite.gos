@@ -1,0 +1,10 @@
+using Math;
+class RandomSprite : Component {
+    var sprites: array;
+    func RandomSwitch() void {
+        gameObject.GetComponent("Sprite").SetSprite(sprites[Math.RandInt(sprites.size())]);
+    }
+    func Start() void {
+        this.RandomSwitch();
+    }
+}

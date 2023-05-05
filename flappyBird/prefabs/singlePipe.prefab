@@ -1,0 +1,36 @@
+[
+    {
+        name: "SinglePipe",
+        transform: {
+            pivot: [0.5, 0.5],
+        },
+        components: [
+            {
+                name: "Sprite",
+                scale: 1.5,
+            },
+            {
+                name: "RandomSprite",
+                sprites: [
+                    "flappyBird/assets/sprites/pipe-green.png",
+                    "flappyBird/assets/sprites/pipe-red.png",
+                ],
+            },
+            {
+                name: "RigidBody",
+                type: "DYNAMIC_BODY",
+                gravityScale: 0,
+                isTrigger: true,
+                elasticity: 0,
+            },
+            {
+                name: "BoxCollider",
+                width: 0.78,
+                height: 4.8,
+            },
+            {
+                name: "GameOverOnCollide",
+            },
+        ],
+    },
+]

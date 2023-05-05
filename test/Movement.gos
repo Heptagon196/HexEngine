@@ -1,0 +1,36 @@
+using Events;
+using Enums;
+using Debug;
+using Physics;
+using Camera;
+using Renderer;
+class Movement : Component {
+    var speed: float;
+    func Update() void {
+        if (Events.LeftMouseDown()) {
+            Debug.print("Raycast");
+            Physics.RaycastAll(Camera.main().ScreenToWorldPoint(new Vector2i(0, 0)), Camera.main().ScreenToWorldPoint(Events.mousePos), -1, new HexAction(
+                lambda [&Debug] (obj: GameObject) void {
+                    Debug.print(obj.name);
+                })
+            );
+        }
+        var f: Vector2f;
+        if (Events.Key(Enums.KEY_A)) {
+            f.x -= speed;
+        } else if (Events.Key(Enums.KEY_D)) {
+            f.x += speed;
+        } else if (Events.Key(Enums.KEY_W)) {
+            f.y += speed;
+        } else if (Events.Key(Enums.KEY_S)) {
+            f.y -= speed;
+        }
+        gameObject.rigidBody.ApplyForceCenter(f);
+    }
+    func OnBeginContact(other: GameObject) void {
+        Debug.print("Begin " + other.name);
+    }
+    func OnEndContact(other: GameObject) void {
+        Debug.print("End " + other.name);
+    }
+}

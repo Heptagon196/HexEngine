@@ -1,0 +1,32 @@
+[
+    {
+        name: "Pipe",
+        components: [
+            {
+                name: "PipeControl",
+                speed: 0.75,
+                startX: 3.24,
+                endX: -3.24,
+                scoreX: -1.39,
+                upYRange: [2.8, 5.8],
+                yDist: 6.72,
+            },
+        ],
+        childs: [
+            {
+                prefab: "flappyBird/prefabs/singlePipe.prefab",
+                name: "UpPipe",
+                components: [
+                    {
+                        name: "Sprite",
+                        flipY: true,
+                    },
+                ],
+            },
+            {
+                prefab: "flappyBird/prefabs/singlePipe.prefab",
+                name: "DownPipe",
+            },
+        ],
+    },
+]

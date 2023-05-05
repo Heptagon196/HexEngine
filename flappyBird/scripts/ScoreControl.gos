@@ -1,0 +1,6 @@
+class ScoreControl : Component {
+    var score: int;
+    func ShowScore() void {
+        gameObject.GetComponent("Text").SetText("得分：" + score.__tostring());
+    }
+}

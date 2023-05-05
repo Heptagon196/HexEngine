@@ -3,5 +3,5 @@
 
 struct Debug {
     static void refl();
-    void print(ReflMgr::Any val);
+    static void print(ReflMgr::Any val);
 };

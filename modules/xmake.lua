@@ -1,0 +1,10 @@
+set_languages("c++20")
+add_rules("mode.release", "mode.debug")
+add_requires("libsdl", "libsdl_image", "libsdl_mixer", "libsdl_ttf", "box2d")
+includes("../core")
+target("modules")
+    set_kind("static")
+    add_packages("libsdl", "libsdl_image", "libsdl_mixer", "libsdl_ttf", "box2d")
+    add_deps("hexcore")
+    add_files("*.cpp");
+    add_files("*/*.cpp")

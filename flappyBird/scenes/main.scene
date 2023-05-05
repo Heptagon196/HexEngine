@@ -1,0 +1,200 @@
+[
+    {
+        name: "Base",
+        components: [
+            { name: "Window" },
+            { name: "Physics" },
+            {
+                name: "Audio",
+                playOnStart: true,
+                loop: true,
+                music: "flappyBird/assets/audio/mario.ogg",
+            },
+        ],
+    },
+    {
+        name: "Camera",
+        transform: {
+            position: [-2.16, -3.84],
+        },
+        components: [
+            {
+                name: "Camera",
+                size: 4.32,
+            },
+        ],
+    },
+    {
+        name: "Background",
+        id: 1,
+        transform: {
+            pivot: [0.5, 0.5],
+        },
+        components: [
+            {
+                name: "Sprite",
+                scale: 1.5,
+            },
+            {
+                name: "RandomSprite",
+                sprites: [
+                    "flappyBird/assets/sprites/background-day.png",
+                    "flappyBird/assets/sprites/background-night.png",
+                ],
+            },
+        ],
+        childs: [
+            {
+                prefab: "flappyBird/prefabs/pipe.prefab",
+                id: 11,
+                name: "Pipe1",
+                transform: { position: [3.16, 0] },
+            },
+            {
+                prefab: "flappyBird/prefabs/pipe.prefab",
+                id: 12,
+                name: "Pipe2",
+                transform: { position: [5.32, 0] },
+            },
+            {
+                prefab: "flappyBird/prefabs/pipe.prefab",
+                id: 13,
+                transform: { position: [7.48, 0] },
+            },
+            {
+                name: "Slide",
+                transform: {
+                    position: [0, -3],
+                    pivot: [0.5, 0.5],
+                },
+                components: [
+                    {
+                        name: "Sprite",
+                        scale: 1.5,
+                        sprite: "flappyBird/assets/sprites/base.png",
+                    },
+                    {
+                        name: "VerticalMoving",
+                        speed: 0.0125,
+                        cycle: true,
+                        startX: 0,
+                        endX: -0.36,
+                        delay: 0,
+                    },
+                ],
+            },
+            {
+                name: "Borders",
+                childs: [
+                    {
+                        prefab: "flappyBird/prefabs/border.prefab",
+                        name: "UpBorder",
+                        transform: {
+                            position: [0, 4.68],
+                        },
+                    },
+                    {
+                        prefab: "flappyBird/prefabs/border.prefab",
+                        name: "DownBorder",
+                        transform: {
+                            position: [0, -3],
+                        },
+                    },
+                ],
+            },
+        ],
+    },
+    {
+        name: "Game",
+        childs: [
+            {
+                name: "Bird",
+                id: 10,
+                transform: {
+                    position: [-1, -0.72],
+                    pivot: [0.5, 0.5],
+                },
+                components: [
+                    {
+                        name: "Sprite",
+                        scale: 1.5,
+                    },
+                    {
+                        name: "BirdAnimation",
+                        perNFrame: 10,
+                        spritesPath: "flappyBird/assets/sprites/",
+                        birdNames: [
+                            "bluebird",
+                            "redbird",
+                            "yellowbird",
+                        ],
+                    },
+                    {
+                        name: "GameControl",
+                        force: [0, 2],
+                    },
+                    {
+                        name: "RigidBody",
+                        enabled: false,
+                        type: "DYNAMIC_BODY",
+                        fixedRotation: false,
+                        elasticity: 0,
+                    },
+                    {
+                        name: "CircleCollider",
+                        radius: 0.2,
+                    },
+                ],
+            },
+        ],
+    },
+    {
+        name: "Guide",
+        id: 2,
+        transform: {
+            pivot: [0.5, 0.5],
+        },
+        components: [
+            {
+                name: "Sprite",
+                scale: 1.5,
+                sprite: "flappyBird/assets/sprites/message.png",
+            },
+        ],
+    },
+    {
+        name: "GameOver",
+        id: 3,
+        enabled: false,
+        transform: {
+            pivot: [0.5, 0.5],
+        },
+        components: [
+            {
+                name: "Sprite",
+                scale: 1.5,
+                sprite: "flappyBird/assets/sprites/gameover.png",
+            },
+        ],
+    },
+    {
+        name: "ScoreBoard",
+        id: 100,
+        transform: {
+            position: [216, 100],
+            pivot: [0.5, 0.5],
+        },
+        components: [
+            {
+                name: "Text",
+                font: "flappyBird/assets/fonts/zpix.ttf",
+                size: 48,
+                text: "得分：0",
+            },
+            {
+                name: "ScoreControl",
+                score: 0,
+            },
+        ]
+    }
+]

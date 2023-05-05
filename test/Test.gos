@@ -1,0 +1,73 @@
+using Window;
+using Debug;
+using Renderer;
+using Events;
+using Enums;
+using Engine;
+using Audio;
+
+class Test : Component {
+    var output: string;
+    var r: int;
+    var g: int;
+    var b: int;
+    var rsign: int;
+    var gsign: int;
+    var bsign: int;
+    func Start() void {
+        Debug.print(output);
+        r = 0;
+        g = 0;
+        b = 0;
+        rsign = 1;
+        gsign = 1;
+        bsign = 1;
+        var i: int = 23333;
+        gameObject.GetComponent("Button").AddListener(new HexAction(lambda [i, &Debug] (_: any) void {
+            Debug.print(i);
+        }));
+    }
+    func Print(obj: GameObject) void {
+        Debug.print(obj.GetComponent("Collider").name);
+    }
+    func Update() void {
+        if (Events.LeftMouseDown() > 0) {
+            gameObject.transform.position = new Vector2f(Events.mousePos.x, Events.mousePos.y);
+        }
+        if (Events.KeyDown(Enums.KEY_SPACE)) {
+            this.Print(gameObject);
+            Debug.print("YOU PRESSED SPACE!");
+            Audio.PlayClip("test/assets/audio/point.wav", 128);
+            // Engine.LoadScene("test/other.scene");
+        }
+        Renderer.main().SetDrawColor(new Vector4i(r, g, b, 0));
+        r += 1 * rsign;
+        g += 2 * gsign;
+        b += 3 * bsign;
+        if (r < 0 || r > 255) {
+            if (r < 0) {
+                r = 0;
+            } else {
+                r = 255;
+            }
+            rsign *= -1;
+        }
+        if (g < 0 || g > 255) {
+            if (g < 0) {
+                g = 0;
+            } else {
+                g = 255;
+            }
+            gsign *= -1;
+        }
+        if (b < 0 || b > 255) {
+            if (b < 0) {
+                b = 0;
+            } else {
+                b = 255;
+            }
+            bsign *= -1;
+        }
+        Renderer.main().FillRect(new Vector2i(0, 0), new Vector2i(Window.main().width, Window.main().height));
+    }
+}

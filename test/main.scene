@@ -1,0 +1,57 @@
+[
+    {
+        name: "Window",
+        transform: {
+            position: [0, 0],
+        },
+        components: [
+            {
+                name: "Window",
+                useConfig: true,
+            },
+            {
+                name: "Audio",
+                playOnStart: true,
+                loop: true,
+                music: "test/assets/audio/mario.ogg",
+            }
+        ],
+    },
+    {
+        name: "Objects",
+        childs: [
+            {
+                name: "Test",
+                transform: {
+                    position: [216, 384],
+                    pivot: [0.5, 0.5],
+                },
+                components: [
+                    {
+                        name: "Test",
+                        output: "hello world! 2",
+                    },
+                    {
+                        name: "Image",
+                        scale: 2,
+                        image: "test/assets/sprites/background-day.png",
+                    },
+                    {
+                        name: "Button",
+                        upImage: "test/assets/sprites/background-day.png",
+                        downImage: "test/assets/sprites/background-night.png",
+                    },
+                    {
+                        name: "Text",
+                        font: "test/assets/fonts/zpix.ttf",
+                        size: 64,
+                        text: "你好，世界",
+                    },
+                    {
+                        name: "BoxCollider",
+                    },
+                ],
+            },
+        ],
+    }
+]

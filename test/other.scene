@@ -1,0 +1,87 @@
+[
+    {
+        name: "Base",
+        components: [
+            {
+                name: "Window",
+            },
+            {
+                name: "Physics",
+            },
+            {
+                name: "Audio",
+                playOnStart: true,
+                loop: true,
+                music: "test/assets/audio/mario.ogg",
+            },
+        ],
+    },
+    {
+        name: "Camera",
+        transform: {
+            position: [-5.4, -3.6],
+        },
+        components: [
+            {
+                name: "Camera",
+                size: 10.8,
+            },
+        ],
+    },
+    {
+        name: "World",
+        transform: {
+            position: [0, 0],
+        },
+        childs: [
+            {
+                name: "Test",
+                transform: {
+                    position: [0, 3],
+                    pivot: [0.5, 0.5],
+                    angle: 90,
+                },
+                components: [
+                    { name: "Movement", speed: 20, },
+                    {
+                        name: "Sprite",
+                        enabled: false,
+                        sprite: "test/assets/sprites/background-day.png",
+                    },
+                    {
+                        name: "RigidBody",
+                        fixedRotation: false,
+                        elasticity: 0.3,
+                        elasticityThreshold: 1,
+                    },
+                    {
+                        name: "CircleCollider",
+                        showCollider: true,
+                        radius: 1,
+                    },
+                ],
+            },
+            {
+                name: "Ground",
+                transform: {
+                    position: [0, -3],
+                    pivot: [0.6, 1],
+                    angle: 10,
+                },
+                components: [
+                    {
+                        name: "RigidBody",
+                        type: "STATIC_BODY",
+                        elasticity: 0,
+                    },
+                    {
+                        name: "BoxCollider",
+                        showCollider: true,
+                        width: 10,
+                        height: 1,
+                    },
+                ],
+            }
+        ],
+    },
+]

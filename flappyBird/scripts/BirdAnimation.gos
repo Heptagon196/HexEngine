@@ -1,0 +1,32 @@
+using Math;
+using Debug;
+class BirdAnimation : Component {
+    var spritesPath: string;
+    var birdNames: array;
+    var perNFrame: int;
+    var imgs: array;
+    var counter: int;
+    var idx: int;
+    var sprite: object;
+    func RandBird() void {
+        var birdName = birdNames[Math.RandInt(birdNames.size())];
+        imgs.insert(0, spritesPath + birdName + "-upflap.png");
+        imgs.insert(1, spritesPath + birdName + "-midflap.png");
+        imgs.insert(2, spritesPath + birdName + "-downflap.png");
+        imgs.insert(3, spritesPath + birdName + "-midflap.png");
+    }
+    func Start() void {
+        imgs.resize(4);
+        this.RandBird();
+        counter = 0;
+        idx = 0;
+        sprite = &gameObject.GetComponent("Sprite");
+    }
+    func Update() void {
+        if (counter % perNFrame == 0) {
+            idx = (idx + 1) % 4;
+            (*sprite).SetSprite(imgs[idx]);
+        }
+        counter += 1;
+    }
+}

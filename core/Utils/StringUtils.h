@@ -1,4 +1,5 @@
 #pragma once
+#include "../Gos/GosFileSystem.h"
 #include <string>
 #include <sstream>
 
@@ -11,11 +12,11 @@ namespace HexEngine {
             ss << cont;
             return ss.str();
         }
-        template<typename To, typename From>
-        static To To(From cont) {
+        template<typename Dest, typename From>
+        static Dest To(From cont) {
             std::stringstream ss;
             ss << cont;
-            To ret;
+            Dest ret;
             ss >> ret;
             return ret;
         }

@@ -1,0 +1,14 @@
+using Audio;
+class GameOverOnCollide : Component {
+    func OnBeginContact(other: GameObject) void {
+        if (!other.HasComponent("GameControl")) {
+            return;
+        }
+        var obj = other.GetComponent("GameControl");
+        if (!obj.gameStarted) {
+            return;
+        }
+        obj.gameOver = true;
+        Audio.PlayClip("flappyBird/assets/audio/hit.wav", 128);
+    }
+}

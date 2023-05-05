@@ -2,32 +2,59 @@
 #include "Utils/StringUtils.h"
 #include "Gos/Reflection/ReflMgr.h"
 #include "Gos/Reflection/JSON.h"
+#include "Components/BaseComponent.h"
+
+HexEngine::GameConfig* HexEngine::GameConfig::instance = nullptr;
+
+HexEngine::GameConfig& HexEngine::GameConfig::content() {
+    return *instance;
+}
+
+HexEngine::GameConfig::GameConfig() {
+    if (instance == nullptr) {
+        instance = this;
+    }
+}
 
 void HexEngine::GameConfig::refl() {
     auto& mgr = ReflMgr::Instance();
     mgr.AddClass<GameConfig>();
-    mgr.AddField(&GameConfig::gameTitle, "gameTitle");
-    mgr.AddField(&GameConfig::startScene, "startScene");
-    mgr.AddField(&GameConfig::screenWidth, "screenWidth");
-    mgr.AddField(&GameConfig::screenHeight, "screenHeight");
-    mgr.AddField(&GameConfig::frame, "frame");
-}
-
-HexEngine::GameConfig::GameConfig() {
-    self = ObjectPtr(TypeID::get<GameConfig>(), (void*)this);
+    mgr.AddAliasClass(TypeID::get<GameConfig>().getName(), "GameConfig");
+    mgr.AddStaticMethod(TypeID::get<GameConfig>(), &GameConfig::content, "content");
+    mgr.AddMethod(&GameConfig::GetString, "Get");
+    mgr.AddMethod(&GameConfig::GetBool, "GetBool");
 }
 
 void HexEngine::GameConfig::ReadConfig(Path cfg) {
-    auto reader = FileSystem::Read(cfg);
-    JSON cont;
-    reader >> cont;
-    cont.Foreach(std::function([this](std::string_view key, JSON& item) {
-        self.GetField(key).As<std::string>() = StringUtils::ToString(item);
-    }));
-    startScene = StringUtils::Path(startScene);
-    std::cout << "Title: " << gameTitle << std::endl;
-    std::cout << "Width: " << screenWidth << std::endl;
-    std::cout << "Height: " << screenHeight << std::endl;
-    std::cout << "StartScene: " << startScene << std::endl;
-    std::cout << "Frame: " << frame << std::endl;
+    while (true) {
+        auto reader = FileSystem::Read(cfg);
+        JSON cont;
+        reader >> cont;
+        cont.Foreach(std::function([this](std::string_view key, JSON& item) {
+            if (!config.contains((std::string)key)) {
+                config[(std::string)key] = StringUtils::ToString(item);
+            }
+        }));
+        if (config.contains("base")) {
+            cfg = Path(config["base"]);
+            config.erase("base");
+            std::cout << "Load sub config " << cfg.string() << std::endl;
+        } else {
+            break;
+        }
+    }
+}
+
+std::string HexEngine::GameConfig::GetString(const std::string& key, const std::string& defaultVal) {
+    if (config.find(key) == config.end()) {
+        return defaultVal;
+    }
+    return config[key];
+}
+
+bool HexEngine::GameConfig::GetBool(const std::string& key, bool defaultVal) {
+    if (config.find(key) == config.end()) {
+        return defaultVal;
+    }
+    return config[key] == "true";
 }

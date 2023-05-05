@@ -1,0 +1,73 @@
+using Engine;
+using Math;
+using Debug;
+using Events;
+using Enums;
+using Audio;
+class PipeControl : Component {
+    var scoreX: float;
+    var move: bool;
+    var speed: float;
+    var startX: float;
+    var endX: float;
+    var upYRange: Vector2f;
+    var yDist: float;
+    var upPipe: object;
+    var downPipe: object;
+    var delay: int;
+    var origX: float;
+    var score: int;
+    func Start() void {
+        upPipe = &gameObject.transform.GetChild(0);
+        downPipe = &gameObject.transform.GetChild(1);
+        delay = 1;
+        origX = gameObject.transform.worldPos().x;
+        move = false;
+        score = 0;
+    }
+    func ResetPos() void {
+        var position = new Vector2f();
+        position = (*upPipe).gameObject.transform.worldPos();
+        (*upPipe).gameObject.rigidBody.SetPosition(new Vector2f(origX, position.y));
+        position.y -= yDist;
+        (*downPipe).gameObject.rigidBody.SetPosition(new Vector2f(origX, position.y));
+    }
+    func Randomize() void {
+        score = 1;
+        (*upPipe).gameObject.GetComponent("RandomSprite").RandomSwitch();
+        (*downPipe).gameObject.GetComponent("Sprite").SetSprite((*upPipe).gameObject.GetComponent("Sprite").sprite);
+        var position = new Vector2f();
+        position = (*upPipe).gameObject.transform.worldPos();
+        position.y = Math.RandFloat(upYRange.x, upYRange.y);
+        if ((*upPipe).gameObject.transform.worldPos().x < endX) {
+            position.x = startX;
+        }
+        (*upPipe).gameObject.rigidBody.SetPosition(position);
+        position.y -= yDist;
+        (*downPipe).gameObject.rigidBody.SetPosition(position);
+    }
+    func Update() void {
+        if (!move) {
+            (*upPipe).gameObject.rigidBody.SetVelocity(new Vector2f(0, 0));
+            (*downPipe).gameObject.rigidBody.SetVelocity(new Vector2f(0, 0));
+            return;
+        }
+        if (delay > 0) {
+            delay--;
+            this.Randomize();
+            return;
+        }
+        if (score > 0 && (*upPipe).gameObject.transform.worldPos().x < scoreX) {
+            Audio.PlayClip("flappyBird/assets/audio/point.wav", 128);
+            var control = Engine.FindObj(100).GetComponent("ScoreControl");
+            control.score++;
+            control.ShowScore();
+            score = 0;
+        }
+        if ((*upPipe).gameObject.transform.worldPos().x < endX) {
+            this.Randomize();
+        }
+        (*upPipe).gameObject.rigidBody.SetVelocity(new Vector2f(-speed, 0));
+        (*downPipe).gameObject.rigidBody.SetVelocity(new Vector2f(-speed, 0));
+    }
+}

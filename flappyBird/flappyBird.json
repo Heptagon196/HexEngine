@@ -1,0 +1,14 @@
+{
+    gameTitle: "FlappyBird",
+    screenWidth: 432,
+    screenHeight: 768,
+    startScene: "flappyBird/scenes/main.scene",
+    frame: 60,
+    centered: true,
+    windowType: Normal,
+    gravityX: 0,
+    gravityY: -6,
+    doSleep: true,
+    velocityIterations: 10,
+    positionIterations: 8,
+}

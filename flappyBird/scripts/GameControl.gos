@@ -1,0 +1,94 @@
+using Engine;
+using Debug;
+using Events;
+using Audio;
+class GameControl : Component {
+    var force: Vector2f;
+    var gameStarted: bool;
+    var gameOver: bool;
+    var startPos: Vector2f;
+    var birdAngle: float;
+    var wait: int;
+    var doForce: int;
+    var pipes: array;
+    func Start() void {
+        startPos = gameObject.transform.position;
+        gameStarted = false;
+        gameOver = false;
+        birdAngle = 0;
+        wait = 0;
+        pipes.resize(3);
+        pipes.insert(0, &Engine.FindObj(11).GetComponent("PipeControl"));
+        pipes.insert(1, &Engine.FindObj(12).GetComponent("PipeControl"));
+        pipes.insert(2, &Engine.FindObj(13).GetComponent("PipeControl"));
+    }
+    func Update() void {
+        if (wait > 0) {
+            wait--;
+            if (wait == 0) {
+                var control = Engine.FindObj(100).GetComponent("ScoreControl");
+                control.score = 0;
+                control.ShowScore();
+                gameObject.GetComponent("BirdAnimation").RandBird();
+                Engine.FindObj(1).GetComponent("RandomSprite").RandomSwitch();
+                Engine.FindObj(3).enabled = false;
+                Engine.FindObj(2).enabled = true;
+                gameObject.rigidBody.SetPosition(startPos);
+                gameObject.transform.position = startPos;
+                gameObject.transform.angle = 0;
+                gameObject.rigidBody.SetRotation(0);
+                gameObject.rigidBody.SetVelocity(new Vector2f(0, 0));
+                gameObject.rigidBody.isTrigger = false;
+                gameObject.rigidBody.UpdateCollider();
+                gameObject.rigidBody.SetEnabled(false);
+            }
+            return;
+        }
+        if (gameOver && gameStarted) {
+            Audio.PlayClip("flappyBird/assets/audio/die.wav", 128);
+            gameStarted = false;
+            gameObject.rigidBody.isTrigger = true;
+            gameObject.rigidBody.UpdateCollider();
+            gameObject.rigidBody.SetRotation(-90);
+            Engine.FindObj(3).enabled = true;
+            wait = 90;
+            for (var i = 0; i < 3; i++) {
+                (*pipes[i]).ResetPos();
+                (*pipes[i]).delay = 1;
+                (*pipes[i]).move = false;
+            }
+            return;
+        }
+        if (!gameStarted) {
+            if (Events.LeftMouseDown()) {
+                for (var i = 0; i < 3; i++) {
+                    (*pipes[i]).move = true;
+                }
+                gameOver = false;
+                Engine.FindObj(2).enabled = false;
+                gameObject.rigidBody.SetEnabled(true);
+                gameStarted = true;
+                birdAngle = 0;
+                gameObject.rigidBody.ApplyForceCenter(force);
+            }
+            return;
+        }
+        if (Events.LeftMouseDown()) {
+            doForce = 15;
+            Audio.PlayClip("flappyBird/assets/audio/wing.wav", 128);
+        }
+        if (Events.LeftMouseUp()) {
+            gameObject.rigidBody.ApplyForceCenter(new Vector2f(force.x, -force.y));
+        }
+        if (doForce > 0) {
+            if (birdAngle < 15.0) {
+                birdAngle += 2.0;
+            }
+            doForce--;
+            gameObject.rigidBody.ApplyForceCenter(force);
+        } else if (birdAngle > -15.0) {
+            birdAngle -= 2.0;
+        }
+        gameObject.transform.angle = birdAngle;
+    }
+}
