@@ -26,7 +26,8 @@ void HexPrefab::__ctor(const std::string& prefabPath) {
 /* Prefab example
 [
     {
-        name: "Test",
+        name: "Object",
+        id: 0,
         transform: {
             position: [0, 0],
         },
@@ -43,8 +44,8 @@ void HexPrefab::__ctor(const std::string& prefabPath) {
         ],
     },
     {
-        name: "Another",
         prefab: "./prefab.prefab",
+        name: "Another",
     }
 ]
 */
@@ -203,6 +204,9 @@ static inline GameObject* instantiateByJSON(GameObject* root, JSON& cont) {
                         val.Foreach(std::function([&arr](int idx, JSON& cont) {
                             arr.cont.push_back(cont.content());
                         }));
+                    } else {
+                        std::string cont = HexEngine::StringUtils::ToString(val.content());
+                        field.TryInvoke("__parse", { ObjectPtr{ TypeID::get<std::string>(), &cont } });
                     }
                 }));
 #undef VAL

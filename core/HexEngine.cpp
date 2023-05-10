@@ -33,6 +33,40 @@ void HexEngine::HexEngine::AddModules(void (*func)()) {
     this->func = func;
 }
 
+static inline void InitStringParse() {
+    auto& mgr = ReflMgr::Instance();
+#define REG_PARSE(type)                                                     \
+    mgr.AddMethod(std::function([](type* self, const std::string& cont) {   \
+        std::stringstream ss;                                               \
+        ss << cont;                                                         \
+        ss >> *self;                                                        \
+    }), "__parse");
+
+    mgr.AddMethod(std::function([](bool* self, const std::string& cont) {
+        std::stringstream ss;
+        ss << cont;
+        if (cont == "0" || cont == "false") {
+            *self = false;
+        } else {
+            *self = true;
+        }
+    }), "__parse");
+
+    REG_PARSE(int);
+    REG_PARSE(int64_t);
+    REG_PARSE(float);
+    REG_PARSE(double);
+#undef REG_PARSE
+    mgr.AddMethod(&std::string::substr, "substr");
+    mgr.AddMethod(&std::string::length, "length");
+    mgr.AddMethod(std::function([](char* ch, const std::string& other) {
+        return other.size() == 1 && *ch == other[0];
+    }), "__eq");
+    mgr.AddMethod(std::function([](std::string* str, char ch) {
+        return str->size() == 1 && ch == (*str)[0];
+    }), "__eq");
+}
+
 void HexEngine::HexEngine::InitGame() {
     std::cout << "Start engine" << std::endl;
     SetAsDefault();
@@ -78,6 +112,7 @@ void HexEngine::HexEngine::InitGame() {
     HexPrefab::refl();
     Debug::refl();
     ReflectBaseComponents();
+    InitStringParse();
     // Reflect modules
     if (func != nullptr) {
         std::cout << "Reflect modules" << std::endl;
