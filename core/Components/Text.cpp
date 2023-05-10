@@ -42,7 +42,8 @@ void Text::Start() {
 }
 
 void Text::Draw() {
-    render->RenderTexture(*texture, TextRect());
+    Vector2f pos = gameObject->transform.worldPos();
+    render->RenderTextureEx(*texture, TextRect(), gameObject->transform.worldRot(), { (int)pos.x, (int)pos.y }, false, false);
 }
 
 void Text::OnDestroy() {

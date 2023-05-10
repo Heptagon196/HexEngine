@@ -5,7 +5,6 @@
 class Camera : BaseComponent {
     private:
         static Camera* instance;
-        Vector2i screen;
     public:
         static void refl();
         static Camera& main();

@@ -42,12 +42,12 @@ void RigidBody::SetRotation(float angle) {
     gameObject->transform.angle = angle - gameObject->transform.angle;
 }
 
-float RigidBody::Mass() {
-    return body->GetMass();
+void RigidBody::SetVelocity(Vector2f v) {
+    velocity = v;
 }
 
-void RigidBody::SetVelocity(Vector2f v) {
-    body->SetLinearVelocity({v.x, v.y});
+float RigidBody::Mass() {
+    return body->GetMass();
 }
 
 void RigidBody::ApplyForceCenter(Vector2f f) {
@@ -126,6 +126,7 @@ void RigidBody::Draw() {
     Transform& transform = gameObject->transform;
     auto orig = transform.worldPos();
     body->SetTransform({orig.x, orig.y}, Math::DEG2RAD(transform.worldRot()));
+    body->SetLinearVelocity({velocity.x, velocity.y});
 }
 
 void RigidBody::OnDestroy() {
