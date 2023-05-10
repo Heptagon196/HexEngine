@@ -15,36 +15,31 @@ class PipeControl : Component {
     var upPipe: object;
     var downPipe: object;
     var delay: int;
-    var origX: float;
     var score: int;
     func Start() void {
         upPipe = &gameObject.transform.GetChild(0);
         downPipe = &gameObject.transform.GetChild(1);
         delay = 1;
-        origX = gameObject.transform.worldPos().x;
         move = false;
         score = 0;
     }
     func ResetPos() void {
         var position = new Vector2f();
-        position = (*upPipe).gameObject.transform.worldPos();
-        (*upPipe).gameObject.rigidBody.SetPosition(new Vector2f(origX, position.y));
-        position.y -= yDist;
-        (*downPipe).gameObject.rigidBody.SetPosition(new Vector2f(origX, position.y));
+        (*upPipe).gameObject.transform.position.x = 0;
+        (*downPipe).gameObject.transform.position.x = 0;
     }
     func Randomize() void {
         score = 1;
         (*upPipe).gameObject.GetComponent("RandomSprite").RandomSwitch();
         (*downPipe).gameObject.GetComponent("Sprite").SetSprite((*upPipe).gameObject.GetComponent("Sprite").sprite);
-        var position = new Vector2f();
-        position = (*upPipe).gameObject.transform.worldPos();
-        position.y = Math.RandFloat(upYRange.x, upYRange.y);
-        if ((*upPipe).gameObject.transform.worldPos().x < endX) {
-            position.x = startX;
+        var y = Math.RandFloat(upYRange.x, upYRange.y);
+        var x = (*upPipe).gameObject.transform.worldPos().x;
+        if (x < endX) {
+            (*upPipe).gameObject.transform.position.x += startX - x;
+            (*downPipe).gameObject.transform.position.x += startX - x;
         }
-        (*upPipe).gameObject.rigidBody.SetPosition(position);
-        position.y -= yDist;
-        (*downPipe).gameObject.rigidBody.SetPosition(position);
+        (*upPipe).gameObject.transform.position.y = y;
+        (*downPipe).gameObject.transform.position.y = y - yDist;
     }
     func Update() void {
         if (!move) {

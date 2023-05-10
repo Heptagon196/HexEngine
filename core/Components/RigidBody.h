@@ -33,5 +33,6 @@ class RigidBody : BaseComponent {
         bool isTrigger = false;
         void Start();
         void PhysicsUpdate();
+        void Draw();
         void OnDestroy();
 };

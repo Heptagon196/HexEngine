@@ -120,6 +120,12 @@ void RigidBody::PhysicsUpdate() {
     velocity = { v.x, v.y };
 }
 
+void RigidBody::Draw() {
+    Transform& transform = gameObject->transform;
+    auto orig = transform.worldPos();
+    body->SetTransform({orig.x, orig.y}, Math::DEG2RAD(transform.worldRot()));
+}
+
 void RigidBody::OnDestroy() {
     body->DestroyFixture(fixture);
     physics->World().DestroyBody(body);

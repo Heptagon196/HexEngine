@@ -25,6 +25,7 @@
 
 # Executables
 .xmake
+.vscode
 build
 *.in
 *.exe
