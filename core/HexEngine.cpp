@@ -87,11 +87,14 @@ void HexEngine::HexEngine::InitGame() {
     std::cout << "Load project files" << std::endl;
     // Load project files. Load scripts
     std::cout << "Path " << std::filesystem::current_path().string() << std::endl;
-    FileSystem::AddDirectory(".");
     if (std::filesystem::exists("data.pck")) {
         std::cout << "Load data.pck" << std::endl;
         FileSystem::AddPack("data.pck");
     }
+    std::cout << "Load scripts" << std::endl;
+    prj.ScanDirectory(".");
+    std::cout << "Load local files" << std::endl;
+    FileSystem::AddDirectory(".");
     if (std::filesystem::exists("gameConfig.json")) {
         std::cout << "Load gameConfig.json" << std::endl;
         cfg.ReadConfig("gameConfig.json");

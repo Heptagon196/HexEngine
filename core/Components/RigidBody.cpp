@@ -33,11 +33,13 @@ void RigidBody::refl() {
 }
 
 void RigidBody::SetPosition(Vector2f pos) {
-    body->SetTransform({pos.x, pos.y}, body->GetAngle());
+    auto p = gameObject->transform.worldPos();
+    auto orig = gameObject->transform.position;
+    gameObject->transform.position = {orig.x + pos.x - p.x, orig.y + pos.y - p.y};
 }
 
 void RigidBody::SetRotation(float angle) {
-    body->SetTransform(body->GetPosition(), Math::DEG2RAD(angle));
+    gameObject->transform.angle = angle - gameObject->transform.angle;
 }
 
 float RigidBody::Mass() {

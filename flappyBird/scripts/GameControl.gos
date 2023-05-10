@@ -33,10 +33,8 @@ class GameControl : Component {
                 Engine.FindObj(1).GetComponent("RandomSprite").RandomSwitch();
                 Engine.FindObj(3).enabled = false;
                 Engine.FindObj(2).enabled = true;
-                gameObject.rigidBody.SetPosition(startPos);
                 gameObject.transform.position = startPos;
                 gameObject.transform.angle = 0;
-                gameObject.rigidBody.SetRotation(0);
                 gameObject.rigidBody.SetVelocity(new Vector2f(0, 0));
                 gameObject.rigidBody.isTrigger = false;
                 gameObject.rigidBody.UpdateCollider();
@@ -49,7 +47,7 @@ class GameControl : Component {
             gameStarted = false;
             gameObject.rigidBody.isTrigger = true;
             gameObject.rigidBody.UpdateCollider();
-            gameObject.rigidBody.SetRotation(-90);
+            gameObject.transform.angle = -90;
             Engine.FindObj(3).enabled = true;
             wait = 90;
             for (var i = 0; i < 3; i++) {
