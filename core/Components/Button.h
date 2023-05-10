@@ -5,7 +5,7 @@
 
 class Button : BaseComponent {
     private:
-        static bool pressed;
+        static Button* buttonToPress;
         std::vector<HexAction> listeners;
         Image* img;
         bool showDown;
@@ -14,8 +14,8 @@ class Button : BaseComponent {
         std::string upImage;
         std::string downImage;
         void Awake();
-        void EarlyUpdate();
         void Update();
+        void LateUpdate();
         void ClickButton();
         int AddListener(HexAction method);
         void RemoveListener(int id);

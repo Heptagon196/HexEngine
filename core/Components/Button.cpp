@@ -3,7 +3,7 @@
 #include "Events.h"
 #include "Math.h"
 
-bool Button::pressed = false;
+Button* Button::buttonToPress = nullptr;
 
 void Button::refl() {
     REG_COMP(Button);
@@ -45,22 +45,24 @@ void Button::Awake() {
     showDown = false;
 }
 
-void Button::EarlyUpdate() {
-    pressed = false;
-}
-
 void Button::Update() {
-    if (!pressed && Math::PointInRecti(Events::mousePos, img->ImageRect())) {
-        if (Events::LeftMouseDown()) {
-            img->SetImage(downImage);
-            showDown = true;
-        } else if (Events::LeftMouseUp()) {
-            pressed = true;
-            ClickButton();
-        }
+    if (Math::PointInRecti(Events::mousePos, img->ImageRect())) {
+        buttonToPress = this;
     }
     if (showDown && Events::LeftMouseUp()) {
         img->SetImage(upImage);
         showDown = false;
+    }
+}
+
+void Button::LateUpdate() {
+    if (buttonToPress != nullptr) {
+        if (Events::LeftMouseDown()) {
+            buttonToPress->img->SetImage(downImage);
+            buttonToPress->showDown = true;
+        } else if (Events::LeftMouseUp()) {
+            buttonToPress->ClickButton();
+        }
+        buttonToPress = nullptr;
     }
 }
