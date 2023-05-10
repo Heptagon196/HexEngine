@@ -3,16 +3,18 @@
 #include "../Gos/Reflection/ReflMgr.h"
 #include "../Gos/Reflection/ReflMgrInit.h"
 
-template<typename T> concept compHas__ctor = requires(T instance) { instance.__ctor(); };
-template<typename T> concept compHasAwake = requires(T instance) { instance.Awake(); };
-template<typename T> concept compHasStart = requires(T instance) { instance.Start(); };
-template<typename T> concept compHasPhysicsUpdate = requires(T instance) { instance.PhysicsUpdate(); };
-template<typename T> concept compHasEarlyUpdate = requires(T instance) { instance.EarlyUpdate(); };
-template<typename T> concept compHasUpdate = requires(T instance) { instance.Update(); };
-template<typename T> concept compHasLateUpdate = requires(T instance) { instance.LateUpdate(); };
-template<typename T> concept compHasDraw = requires(T instance) { instance.Draw(); };
-template<typename T> concept compHasAfterDraw = requires(T instance) { instance.AfterDraw(); };
-template<typename T> concept compHasOnDestroy = requires(T instance) { instance.OnDestroy(); };
+#define DEF_CONCEPT(func) template<typename T> concept compHas ## func = requires(T instance) { instance.func(); }
+DEF_CONCEPT(__ctor);
+DEF_CONCEPT(Awake);
+DEF_CONCEPT(Start);
+DEF_CONCEPT(PhysicsUpdate);
+DEF_CONCEPT(EarlyUpdate);
+DEF_CONCEPT(Update);
+DEF_CONCEPT(LateUpdate);
+DEF_CONCEPT(Draw);
+DEF_CONCEPT(AfterDraw);
+DEF_CONCEPT(OnDestroy);
+#undef DEF_CONCEPT
 
 #define REG_METHOD(method) mgr.AddMethod(&REG_CLASS::method, #method)
 
