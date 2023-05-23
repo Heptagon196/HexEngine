@@ -23,6 +23,8 @@ void HexEngine::GameConfig::refl() {
     mgr.AddStaticMethod(TypeID::get<GameConfig>(), &GameConfig::content, "content");
     mgr.AddMethod(&GameConfig::GetString, "Get");
     mgr.AddMethod(&GameConfig::GetBool, "GetBool");
+    mgr.AddMethod(&GameConfig::Get<int>, "GetInt");
+    mgr.AddMethod(&GameConfig::Get<float>, "GetFloat");
 }
 
 void HexEngine::GameConfig::ReadConfig(Path cfg) {
